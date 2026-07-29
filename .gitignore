@@ -1,0 +1,23 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated output
+output/
+
+# Private test drawings - NEVER commit real work drawings
+samples/private/
+
+# Secrets
+.env
+*.key
+
+# IDE / OS clutter
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
