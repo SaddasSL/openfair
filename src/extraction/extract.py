@@ -17,6 +17,26 @@ Return ONLY a JSON array, no other text. Each element must have:
 - "tolerance": the tolerance as written (e.g. "±0.1", "+0.2/-0", or GD&T frame like "⌖ 0.2 (M) | A | B"), or null if none
 - "zone": approximate location on the drawing (e.g. "top-left", "centre", "bottom-right")
 
+CRITICAL - GD&T symbol identification. Look carefully at the symbol in the first
+compartment of each feature control frame and use the correct one:
+- ⌖ position (circle with crosshairs)
+- ⊥ perpendicularity (upside-down T)
+- ∥ parallelism, ∠ angularity, — straightness
+- ⌭ cylindricity, ○ circularity, ⏥ flatness
+- ⌓ profile of a surface (half circle), ⌒ profile of a line (arc)
+- ⊙ concentricity, ⌯ symmetry, ↗ circular runout, ⌰ total runout
+Do NOT default to position - perpendicularity ⊥ and position ⌖ look different.
+
+Rules:
+- A dimension with its feature control frame(s) and quantity note (e.g. 4X) is ONE
+  logical callout: emit the dimension and each FCF as separate entries, but never
+  split one FCF into fragments or re-emit part of a callout as its own entry.
+- "nX" prefixes (2X, 4X) mean the dimension applies to n features - keep the prefix
+  attached in "value" (e.g. "4X ⌀.625"), not as a separate note entry.
+- A dimension like "4X .82" with no ⌀ symbol is linear spacing, NOT a diameter.
+- Datum feature flags (boxed letters A, B, C...) attached to features: type "note",
+  value "datum A" etc.
+
 Be exhaustive - missing a characteristic on a FAIR is a quality escape."""
 
 
@@ -51,5 +71,5 @@ if __name__ == "__main__":
     out_path = Path("output") / (Path(sys.argv[1]).stem + "_extracted.json")
     out_path.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Extracted {len(results)} characteristics -> {out_path}")
-    for r in results[:10]:
+    for r in results:
         print(f"  #{r['id']:>3} [{r['type']}] {r['value']}  tol: {r['tolerance']}  ({r['zone']})")
