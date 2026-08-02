@@ -1,6 +1,7 @@
 ﻿"""Draw numbered inspection balloons on a drawing using extracted bbox positions."""
 import json
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
@@ -29,25 +30,33 @@ def balloon(image_path: str, json_path: str) -> Path:
     font = load_font(int(RADIUS * 1.1))
 
     entries = json.loads(Path(json_path).read_text(encoding="utf-8"))
+
+    # group entries by their (snapped) bbox so shared clusters stack balloons
+    groups = defaultdict(list)
     number = 0
     for e in entries:
         if not is_ballooned(e):
             continue
         number += 1
         e["balloon"] = number
-        x, y, bw, bh = e["bbox"]
-        # balloon centre: just left of the callout, vertically centred on it
-        cx, cy = x - RADIUS - 8, y + bh / 2
-        cx = max(RADIUS + 2, cx)
-        draw.ellipse((cx - RADIUS, cy - RADIUS, cx + RADIUS, cy + RADIUS),
-                     outline=COLOR, width=4, fill=(255, 255, 255))
-        draw.text((cx, cy), str(number), fill=COLOR, font=font, anchor="mm")
-        # short leader line to the callout's left edge
-        draw.line((cx + RADIUS, cy, x, cy), fill=COLOR, width=3)
+        groups[tuple(e["bbox"])].append(e)
+
+    for bbox, members in groups.items():
+        x, y, bw, bh = bbox
+        cx = max(RADIUS + 2, x - RADIUS - 8)
+        n = len(members)
+        for i, e in enumerate(members):
+            # stack vertically, centred on the cluster
+            cy = y + bh / 2 + (i - (n - 1) / 2) * (2 * RADIUS + 8)
+            cy = min(max(RADIUS + 2, cy), img.height - RADIUS - 2)
+            draw.ellipse((cx - RADIUS, cy - RADIUS, cx + RADIUS, cy + RADIUS),
+                         outline=COLOR, width=4, fill=(255, 255, 255))
+            draw.text((cx, cy), str(e["balloon"]), fill=COLOR, font=font, anchor="mm")
+            if i == 0:
+                draw.line((cx + RADIUS, y + bh / 2, x, y + bh / 2), fill=COLOR, width=3)
 
     out = Path(json_path).with_name(Path(image_path).stem + "_ballooned.png")
     img.save(out)
-    # save back the JSON with balloon numbers - the FAIR form will use these
     Path(json_path).write_text(json.dumps(entries, indent=2, ensure_ascii=False),
                                encoding="utf-8")
     print(f"{number} balloons drawn -> {out}")
