@@ -27,7 +27,7 @@ def requirement(entry: dict) -> str:
     if not tol:
         return v
     # some GD&T entries carry the frame in both fields - never print it twice
-    nv, nt = (v.replace(" ", "").replace("|", "").replace("Ø", "⌀"), tol.replace(" ", "").replace("|", "").replace("Ø", "⌀"))
+    nv, nt = (v.replace(" ", "").replace("|", "").replace("Ø", "⌀").replace("0.", "."), tol.replace(" ", "").replace("|", "").replace("Ø", "⌀").replace("0.", "."))
     if nv in nt:
         return tol
     if nt in nv:
@@ -56,8 +56,8 @@ def form3(json_path: str, part_number: str = "", part_name: str = "", order_numb
     for cell, label, value in labels:
         ws[cell] = label
         ws[cell].font = HDR_FONT
-        col = chr(ord(cell[0]) + 1)
-        ws[f"{col}2"] = value
+        value_cell = f"{chr(ord(cell[0]) + 1)}{cell[1:]}"  # next column, SAME row
+        ws[value_cell] = value
 
     # column headers
     cols = ["5. Char No.", "6. Reference Location", "7. Characteristic Designator",
@@ -94,6 +94,8 @@ if __name__ == "__main__":
     form3(sys.argv[1],
           sys.argv[2] if len(sys.argv) > 2 else "",
           sys.argv[3] if len(sys.argv) > 3 else "")
+
+
 
 
 
