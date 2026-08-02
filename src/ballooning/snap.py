@@ -12,6 +12,12 @@ def find_blue_clusters(image_path: str, debug: bool = True) -> list[tuple[int, i
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     # blue annotations: hue ~120 in OpenCV's 0-179 scale
     mask = cv2.inRange(hsv, np.array([100, 80, 80]), np.array([140, 255, 255]))
+    # erase leader lines: long straight segments are leaders, not text
+    lines = cv2.HoughLinesP(mask, 1, np.pi / 180, threshold=80,
+                            minLineLength=60, maxLineGap=4)
+    if lines is not None:
+        for (x1, y1, x2, y2) in lines.reshape(-1, 4):
+            cv2.line(mask, (x1, y1), (x2, y2), 0, 7)
     # fuse characters of one callout into a single blob
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (25, 25))
     fused = cv2.dilate(mask, kernel)
@@ -54,3 +60,5 @@ if __name__ == "__main__":
         print("Usage: py -m src.ballooning.snap <image_path> <extracted_json>")
         sys.exit(1)
     snap(sys.argv[1], sys.argv[2])
+
+
