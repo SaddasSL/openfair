@@ -27,7 +27,7 @@ def requirement(entry: dict) -> str:
     if not tol:
         return v
     # some GD&T entries carry the frame in both fields - never print it twice
-    nv, nt = v.replace(" ", ""), tol.replace(" ", "")
+    nv, nt = (v.replace(" ", "").replace("|", "").replace("Ø", "⌀"), tol.replace(" ", "").replace("|", "").replace("Ø", "⌀"))
     if nv in nt:
         return tol
     if nt in nv:
@@ -93,4 +93,5 @@ if __name__ == "__main__":
     form3(sys.argv[1],
           sys.argv[2] if len(sys.argv) > 2 else "",
           sys.argv[3] if len(sys.argv) > 3 else "")
+
 
