@@ -62,14 +62,30 @@ def merge_tiles(image_path: str) -> list[dict]:
                 owned += 1
         print(f"  {name}: {len(results)} extracted, {owned} owned")
 
-    # safety dedupe: identical normalized text with nearly coincident boxes
+    # dedupe: same callout = compatible value text (equal or truncated prefix,
+    # after normalising) AND centres reasonably close. Generous radius is safe
+    # because unrelated callouts never have compatible values.
+    def normval(x):
+        return ((x.get("value") or "").replace(" ", "")
+                .replace("Ø", "⌀").replace("0.", "."))
+
+    def compatible(a, b):
+        va, vb = normval(a), normval(b)
+        return bool(va) and bool(vb) and (va in vb or vb in va)
+
+    def completeness(x):
+        return len(x.get("value") or "") + len(x.get("tolerance") or "")
+
     final = []
     for e in kept:
-        dup = next((f for f in final if norm(f) == norm(e)
-                    and abs(centre(f["bbox"])[0] - centre(e["bbox"])[0]) < 150
-                    and abs(centre(f["bbox"])[1] - centre(e["bbox"])[1]) < 150), None)
-        if not dup:
+        dup = next((f for f in final if f.get("type") == e.get("type")
+                    and compatible(f, e)
+                    and abs(centre(f["bbox"])[0] - centre(e["bbox"])[0]) < 500
+                    and abs(centre(f["bbox"])[1] - centre(e["bbox"])[1]) < 500), None)
+        if dup is None:
             final.append(e)
+        elif completeness(e) > completeness(dup):
+            final[final.index(dup)] = e
     for i, e in enumerate(final, start=1):
         e["id"] = i
     return final
@@ -85,3 +101,6 @@ if __name__ == "__main__":
     print(f"\nMerged total: {len(results)} characteristics -> {out_path}")
     for r in results:
         print(f"  #{r['id']:>3} [{r['type']}] {r['value']}  tol: {r['tolerance']}  ({r['zone']}, {r['tile']})")
+
+
+
