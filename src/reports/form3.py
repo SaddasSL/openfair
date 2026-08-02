@@ -35,7 +35,7 @@ def requirement(entry: dict) -> str:
     return f"{v} {tol}"
 
 
-def form3(json_path: str, part_number: str = "", part_name: str = "") -> Path:
+def form3(json_path: str, part_number: str = "", part_name: str = "", order_number: str = "") -> Path:
     entries = json.loads(Path(json_path).read_text(encoding="utf-8"))
     ballooned = [e for e in entries if e.get("balloon")]
     ballooned.sort(key=lambda e: e["balloon"])
@@ -51,7 +51,8 @@ def form3(json_path: str, part_number: str = "", part_name: str = "") -> Path:
     labels = [("A2", "1. Part Number:", part_number),
               ("C2", "2. Part Name:", part_name),
               ("E2", "3. Serial Number:", ""),
-              ("G2", "4. FAIR Identifier:", "")]
+              ("G2", "4. FAIR Identifier:", ""),
+              ("A3", "Order Number:", order_number)]
     for cell, label, value in labels:
         ws[cell] = label
         ws[cell].font = HDR_FONT
@@ -93,5 +94,7 @@ if __name__ == "__main__":
     form3(sys.argv[1],
           sys.argv[2] if len(sys.argv) > 2 else "",
           sys.argv[3] if len(sys.argv) > 3 else "")
+
+
 
 

@@ -11,7 +11,7 @@ import json
 
 
 def run_pipeline(pdf_path: str, part_number: str = "", part_name: str = "",
-                 out_dir: str = "output") -> dict:
+                 order_number: str = "", out_dir: str = "output") -> dict:
     """PDF in -> ballooned drawing + Form 3 out. Returns paths of all artifacts."""
     print(f"[1/5] Rendering {pdf_path}...")
     images = render_pdf(pdf_path, out_dir)
@@ -31,7 +31,7 @@ def run_pipeline(pdf_path: str, part_number: str = "", part_name: str = "",
     ballooned = balloon(image_path, str(json_path))
 
     print("[5/5] Generating Form 3...")
-    xlsx = form3(str(json_path), part_number, part_name)
+    xlsx = form3(str(json_path), part_number, part_name, order_number)
 
     return {"image": image_path, "json": str(json_path),
             "ballooned": str(ballooned), "form3": str(xlsx)}
@@ -47,3 +47,4 @@ if __name__ == "__main__":
     print("\nDone:")
     for k, v in results.items():
         print(f"  {k}: {v}")
+
