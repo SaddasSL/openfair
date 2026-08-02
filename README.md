@@ -12,9 +12,11 @@ Built by an aerospace quality inspector who got tired of ballooning drawings by 
 
 - [x] PDF to 300 DPI image rendering (PyMuPDF)
 - [x] Vision extraction of dimensions, tolerances, GD&T frames (~94% on NIST CTC3)
-- [ ] Image tiling for small-symbol accuracy
-- [ ] Automatic drawing ballooning
-- [ ] AS9102 Form 3 generation (Excel)
+- [x] Tiled full-resolution extraction with deterministic merging
+- [x] Automatic drawing ballooning (OpenCV annotation detection)
+- [x] AS9102 Form 3 generation (Excel)
+- [ ] STEP/DXF import for nominal coordinates and CMM point export
+- [ ] Web interface (FastAPI)
 
 ## Quick start
 
@@ -22,3 +24,4 @@ Create a venv, install from requirements.txt, set ANTHROPIC_API_KEY, then run
 the render module on a drawing PDF followed by the extract module on the PNG.
 
 Test drawings are NIST MBE PMI test cases (public domain).
+
