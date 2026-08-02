@@ -16,6 +16,8 @@ Return ONLY a JSON array, no other text. Each element must have:
 - "value": the nominal value as written (e.g. "25.4", "R5", "⌀12")
 - "tolerance": the tolerance as written (e.g. "±0.1", "+0.2/-0", or GD&T frame like "⌖ 0.2 (M) | A | B"), or null if none
 - "zone": approximate location on the drawing (e.g. "top-left", "centre", "bottom-right")
+- "bbox": approximate pixel bounding box of the callout text as [x, y, width, height],
+  where x,y is the top-left corner. Estimate as accurately as you can.
 
 CRITICAL - GD&T symbol identification. Look carefully at the symbol in the first
 compartment of each feature control frame and use the correct one:
@@ -73,3 +75,4 @@ if __name__ == "__main__":
     print(f"Extracted {len(results)} characteristics -> {out_path}")
     for r in results:
         print(f"  #{r['id']:>3} [{r['type']}] {r['value']}  tol: {r['tolerance']}  ({r['zone']})")
+
