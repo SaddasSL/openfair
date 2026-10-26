@@ -1,0 +1,31 @@
+{
+  "drawing": "samples/public/nist_ctc3.pdf",
+  "source": "NIST PMI Complex Test Case 3 (nist_ctc_03_asme1_rc), Rev C. Transcribed by hand from the drawing.",
+  "units": "inch",
+  "notes": "required = inspection characteristics a FAIR must account for. optional = reference or basic dimensions (not inspected directly). Datum feature symbols are listed separately and are not scored as characteristics.",
+  "datums": ["A", "B", "C", "D", "E", "F"],
+  "characteristics": [
+    {"page": 1, "type": "diameter", "value": "2X Ø.438", "tolerance": "±.005", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ Ø.05(M) | A | B(M) | C(M)", "kind": "required"},
+    {"page": 1, "type": "diameter", "value": "Ø2.00", "tolerance": "±.01", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ Ø.06 | D | B | C", "kind": "required"},
+    {"page": 1, "type": "linear", "value": "(.750)", "tolerance": null, "kind": "optional"},
+    {"page": 1, "type": "gdt", "value": "profile of a surface", "tolerance": "⌓ .03 | A | B | C", "kind": "required"},
+    {"page": 1, "type": "diameter", "value": "4X Ø.625", "tolerance": "±.005", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ Ø.05(M) | D | B | C", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "profile of a surface", "tolerance": "⌓ .01 | A", "kind": "required"},
+    {"page": 1, "type": "diameter", "value": "Ø.438", "tolerance": "±.005", "kind": "required", "comment": "datum feature C"},
+    {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ Ø.02 | A | B", "kind": "required"},
+    {"page": 1, "type": "diameter", "value": "Ø1.065", "tolerance": "±.003", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "perpendicularity", "tolerance": "⊥ Ø.01 | E", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "angularity", "tolerance": "∠ .04 | A", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "flatness", "tolerance": "⏥ .005 / .25 X .25", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "profile of a surface", "tolerance": "⌓ .06 | A | B | C", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ .03 | D | B | C", "kind": "required"},
+    {"page": 1, "type": "diameter", "value": "Ø1.500", "tolerance": "±.005", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ Ø.08 | D | B | C", "kind": "required"},
+    {"page": 1, "type": "linear", "value": "4X .82", "tolerance": "±.06", "kind": "required"},
+    {"page": 1, "type": "diameter", "value": "Ø.438", "tolerance": "±.005", "kind": "required", "comment": "datum feature B"},
+    {"page": 1, "type": "gdt", "value": "perpendicularity", "tolerance": "⊥ Ø.01 | A", "kind": "required"}
+  ]
+}
