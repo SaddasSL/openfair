@@ -1,0 +1,25 @@
+{
+  "drawing": "samples/public/nist_ctc5.pdf",
+  "source": "NIST PMI Complex Test Case 5 (nist_ctc_05_asme1_rd), Rev D, views 1 and 2. Transcribed by hand from the drawing.",
+  "units": "inch",
+  "notes": "Basic dimensions locating datum targets C1 and D1 are optional.",
+  "datums": ["A", "B", "C1", "D", "D1"],
+  "characteristics": [
+    {"page": 1, "type": "gdt", "value": "circular runout", "tolerance": "↗ .025 | A-B", "kind": "required", "comment": "flange outer diameter"},
+    {"page": 1, "type": "gdt", "value": "concentricity", "tolerance": "◎ Ø.030 | A", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "perpendicularity", "tolerance": "⊥ .010 | D", "kind": "required"},
+    {"page": 1, "type": "linear", "value": "5.000", "tolerance": "±.008 (ST)", "kind": "required", "comment": "statistical tolerance"},
+    {"page": 1, "type": "gdt", "value": "straightness", "tolerance": "⏤ .005", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "circularity", "tolerance": "○ .002", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "circular runout", "tolerance": "↗ .035 | A-B", "kind": "required"},
+    {"page": 1, "type": "gdt", "value": "circular runout", "tolerance": "↗ .025 | A-B", "kind": "required", "comment": "flange face"},
+    {"page": 1, "type": "gdt", "value": "perpendicularity", "tolerance": "⊥ .010 | C", "kind": "required"},
+    {"page": 1, "type": "linear", "value": "[2.000]", "tolerance": null, "kind": "optional"},
+    {"page": 1, "type": "linear", "value": "[1.250]", "tolerance": null, "kind": "optional"},
+    {"page": 2, "type": "gdt", "value": "total runout", "tolerance": "⌰ .015 | B", "kind": "required"},
+    {"page": 2, "type": "gdt", "value": "total runout", "tolerance": "⌰ .002 | A", "kind": "required"},
+    {"page": 2, "type": "diameter", "value": "Ø10.000", "tolerance": "±.001", "kind": "required"},
+    {"page": 2, "type": "linear", "value": "[2.000]", "tolerance": null, "kind": "optional"},
+    {"page": 2, "type": "linear", "value": "[1.250]", "tolerance": null, "kind": "optional"}
+  ]
+}
