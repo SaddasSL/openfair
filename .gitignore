@@ -24,3 +24,6 @@ desktop.ini
 
 # Benchmark outputs (rendered images are large)
 eval/results/**/*.png
+
+# Benchmark runs
+eval/results/

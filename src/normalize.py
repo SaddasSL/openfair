@@ -110,4 +110,9 @@ def signature(entry: dict) -> tuple:
     if kind == "gdt":
         frame = tol if tol and "|" in str(tol) else f"{value or ''} {tol or ''}"
         return ("gdt", gdt_class(value, tol), tuple(sorted(numbers(frame))), tuple(datum_refs(frame)))
-    return ("dim", tuple(sorted(numbers(value) + numbers(tol))))
+    nums = numbers(value)
+    if not (tol and canonical(tol) in canonical(value)):
+        # the tolerance is often repeated inside the value ("Ø.438 ±.005" plus "±.005");
+        # count its numbers only once
+        nums += numbers(tol)
+    return ("dim", tuple(sorted(nums)))

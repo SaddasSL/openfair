@@ -27,3 +27,9 @@ def test_signature_ignores_formatting():
     assert normalize.signature(a) == normalize.signature(b)
     assert normalize.signature({"type": "diameter", "value": "Ø10.5", "tolerance": "±.1"}) != \
         normalize.signature({"type": "diameter", "value": "Ø1.5", "tolerance": "±.1"})
+
+
+def test_signature_counts_repeated_tolerance_once():
+    in_value = {"type": "diameter", "value": "2X Ø.438 ±.005", "tolerance": "±.005"}
+    separate = {"type": "diameter", "value": "2X Ø.438", "tolerance": "±.005"}
+    assert normalize.signature(in_value) == normalize.signature(separate)
