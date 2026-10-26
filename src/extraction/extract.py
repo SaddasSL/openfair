@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-MODEL = os.environ.get("OPENFAIR_MODEL", "claude-sonnet-4-6")
+MODEL = os.environ.get("OPENFAIR_MODEL", "claude-sonnet-5-5")
 
 PROMPT = """You are an aerospace quality inspector analysing an engineering drawing.
 
@@ -31,8 +31,18 @@ CRITICAL - GD&T symbol identification. Use the symbol in the first cell of each 
 - ∥ parallelism, ∠ angularity, ⏤ straightness
 - ⌭ cylindricity, ○ circularity, ⏥ flatness
 - ⌓ profile of a surface (closed half circle), ⌒ profile of a line (open arc)
-- ◎ concentricity, ⌯ symmetry, ↗ circular runout (one arrow), ⌰ total runout (two arrows)
+- ◎ concentricity, ⌯ symmetry
+- runout: count the arrowheads in the symbol. One arrow = ↗ circular runout.
+  Two arrows side by side (often joined by a base line) = ⌰ total runout.
 Do NOT default to position - perpendicularity ⊥ and position ⌖ look different.
+Form tolerances (flatness, straightness, circularity, cylindricity) never have datums;
+orientation tolerances (perpendicularity, parallelism, angularity) always do. If what
+you read breaks this, look at the symbol again.
+Copy every datum letter and modifier in the frame, e.g. "⌖ | Ø.08 | D | B | C".
+
+Hole symbols: ⌴ counterbore, ⌵ countersink, ↧ depth (an arrow pointing down).
+Keep modifiers that change inspection, such as (ST) statistical tolerance, (P) projected
+zone, (M) or (L), and a per unit area such as ".005 / .25 X .25".
 
 Rules:
 - A dimension and its feature control frame(s) are separate entries; never split one
@@ -68,7 +78,8 @@ def _ask(image_path: str | Path, prompt: str, max_tokens: int = 8000) -> str:
             {"type": "text", "text": prompt},
         ]}],
     )
-    return message.content[0].text
+    # newer models may return thinking blocks before the answer; keep only text
+    return "".join(b.text for b in message.content if getattr(b, "type", "") == "text")
 
 
 def parse_json(text: str):

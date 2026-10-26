@@ -40,7 +40,10 @@ def search_tokens(entry: dict) -> list[str]:
     words = [w for w in re.split(r"\s+", (entry.get("value") or "").strip()) if len(w) > 1]
     nums = re.findall(r"\d*\.\d+|\d+\.\d*|\d+", text)
     # whole words first (most specific), then numbers, longest first
-    return list(dict.fromkeys(sorted(words, key=len, reverse=True) + sorted(set(nums), key=len, reverse=True)))
+    # one or two characters ("2", "A") match too many unrelated words on a sheet
+    tokens = sorted(words, key=len, reverse=True) + sorted(set(nums), key=len, reverse=True)
+    whole = (entry.get("value") or "").strip()
+    return [t for t in dict.fromkeys(tokens) if len(t) >= 3 or (t == whole and len(t) >= 2)]
 
 
 # ---------- 1. PDF text layer ----------
@@ -134,6 +137,7 @@ def locate(entries: list[dict], image_path: str, pdf_page=None, dpi: int = 300) 
             e["bbox_source"] = "none"
             counts["none"] += 1
             continue
+        e.setdefault("bbox_estimate", [int(v) for v in e["bbox"]])
         box = locate_in_text(e, words, radius) if words else None
         source = "pdf-text"
         if box is None:

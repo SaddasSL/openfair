@@ -150,7 +150,7 @@ def form3(wb, info: dict, entries: list[dict]):
     for e in sorted((e for e in entries if e.get("balloon")), key=lambda e: e["balloon"]):
         kind = TYPE_LABEL.get(e.get("type"), "")
         if e.get("type") == "gdt":
-            kind = f"GD&T {normalize.gdt_class(e.get('value'), e.get('tolerance')) or ''}".strip()
+            kind = f"GD&T {normalize.gdt_class(e.get('tolerance')) or normalize.gdt_class(e.get('value')) or ''}".strip()
         comments = [kind]
         if e.get("bbox_source") == "estimate":
             comments.append("balloon position approximate")

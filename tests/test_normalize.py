@@ -33,3 +33,9 @@ def test_signature_counts_repeated_tolerance_once():
     in_value = {"type": "diameter", "value": "2X Ø.438 ±.005", "tolerance": "±.005"}
     separate = {"type": "diameter", "value": "2X Ø.438", "tolerance": "±.005"}
     assert normalize.signature(in_value) == normalize.signature(separate)
+
+
+def test_signature_trusts_the_frame_symbol():
+    loose = {"type": "gdt", "value": "↗↗ .002", "tolerance": "⌰ | .002 | A"}
+    key = {"type": "gdt", "value": "total runout", "tolerance": "⌰ .002 | A"}
+    assert normalize.signature(loose) == normalize.signature(key)
