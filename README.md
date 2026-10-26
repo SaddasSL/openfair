@@ -20,7 +20,7 @@ Built by an aerospace quality inspector who got tired of ballooning drawings by 
 | Extract | Each page is cut into 6 overlapping tiles and read by a vision model, which returns every dimension, tolerance, thread and feature control frame. Tiles keep only callouts centred in their own cell, then readings that straddle a boundary are merged. The title block (part number, revision, material, specifications) is read from page 1. |
 | Locate | Each callout's position is tightened using the PDF text layer when the drawing has real text, otherwise OpenCV ink clusters (coloured PMI or black ink), otherwise the model's estimate is kept. Nothing found never stops the run. |
 | Zones | Reference Location is written as sheet and zone, e.g. `Sh 1 / B3`. Zone labels are read from the drawing border when present; otherwise a regular grid is used (ASME Y14.1 numbering by default, ISO 5457 optional, or set your own size). |
-| Balloon | Characteristics are numbered in page order. Datum symbols, notes, basic and reference dimensions get no balloon. Balloons are placed clear of callout text. |
+| Balloon | Characteristics are numbered in page order. Datum symbols, notes, basic and reference dimensions get no balloon. Each balloon goes in the nearest clear space beside its own callout, so it stays readable on angled and crowded views. |
 | Report | Forms 1 to 3 are filled from the title block and the characteristics. Results, serial numbers and signatures are left for the inspector. |
 
 ## Quick start
@@ -61,6 +61,21 @@ A characteristic counts as found only when the GD&T type, tolerance values and d
 references all match (for dimensions: the quantity, nominal and tolerance values).
 Results are written to `eval/results/<date>/score.json`. Model output can vary
 slightly between runs, so report the date and model with any figure you quote.
+
+Latest result, 26 Oct 2026, three full runs with the default model set in
+`src/extraction/extract.py`:
+
+| Run | Recall | Precision | F1 |
+|---|---|---|---|
+| 1 | 97.8% | 98.1% | 97.9% |
+| 2 | 100% | 100% | 100% |
+| 3 | 100% | 98.1% | 99.0% |
+| All three | 99.3% (134 of 135) | 98.7% (155 of 157) | 99.0% |
+
+The errors across those runs were one extra datum letter on a frame, one value read
+that is not on the drawing, and one missed frame as a result of the extra datum.
+Three public test drawings are a small sample: treat this as a check that the
+pipeline works end to end, not as a guarantee for your drawings.
 
 ## Tests
 

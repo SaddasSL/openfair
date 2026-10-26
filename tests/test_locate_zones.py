@@ -59,3 +59,9 @@ def test_default_grid_conventions():
 def test_override_grid(black_drawing):
     grid = grid_for_page(fitz.open(black_drawing)[0], "8x4")
     assert not grid.detected and len(grid.cols) == 8 and len(grid.rows) == 4
+
+
+def test_search_tokens_skip_short_fragments():
+    from src.ballooning.locate import search_tokens
+    assert "2" not in search_tokens({"value": "2 COPLANAR SURFACES", "tolerance": "⌓ | .01 | A"})
+    assert search_tokens({"value": "R5"}) == ["R5"]

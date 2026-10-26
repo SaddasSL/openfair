@@ -109,7 +109,9 @@ def signature(entry: dict) -> tuple:
     kind = entry.get("type")
     if kind == "gdt":
         frame = tol if tol and "|" in str(tol) else f"{value or ''} {tol or ''}"
-        return ("gdt", gdt_class(value, tol), tuple(sorted(numbers(frame))), tuple(datum_refs(frame)))
+        # the frame's own symbol decides; the free text value is only a fallback
+        kind_name = gdt_class(tol) or gdt_class(value)
+        return ("gdt", kind_name, tuple(sorted(numbers(frame))), tuple(datum_refs(frame)))
     nums = numbers(value)
     if not (tol and canonical(tol) in canonical(value)):
         # the tolerance is often repeated inside the value ("Ø.438 ±.005" plus "±.005");
