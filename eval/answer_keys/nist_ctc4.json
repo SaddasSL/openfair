@@ -13,7 +13,7 @@
     {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ Ø0.3 | D | E", "kind": "required", "comment": "composite lower segment"},
     {"page": 1, "type": "thread", "value": "4X M12 x 1.75 - 6H ↧ 25", "tolerance": "±0.25", "kind": "required"},
     {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ Ø0.75 (P) 50 | A | B | C", "kind": "required"},
-    {"page": 1, "type": "diameter", "value": "4X ⌴Ø20 ↧ 20", "tolerance": "±0.2", "kind": "required", "comment": "counterbore diameter ±0.2 and depth ±0.2"},
+    {"page": 1, "type": "diameter", "value": "4X ⌴Ø20 ±0.2 ↧ 20 ±0.2", "tolerance": "±0.2", "kind": "required", "comment": "counterbore diameter ±0.2 and depth ±0.2"},
     {"page": 1, "type": "diameter", "value": "30X Ø14", "tolerance": "±0.1", "kind": "required"},
     {"page": 1, "type": "diameter", "value": "30X ⌵Ø20 X 90°", "tolerance": "±0.3 X ±1°", "kind": "required", "comment": "countersink"},
     {"page": 1, "type": "gdt", "value": "position", "tolerance": "⌖ Ø0.35 | A | B | C", "kind": "required"},
