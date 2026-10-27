@@ -3,7 +3,7 @@
 Score saved results (no API key needed):
     python -m eval.score output/nist_ctc3_characteristics.json eval/answer_keys/nist_ctc3.json
 
-Run the full benchmark (extracts all three NIST drawings, needs ANTHROPIC_API_KEY):
+Run the full benchmark (extracts all three NIST drawings, needs OPENFAIR_API_KEY):
     python -m eval.score --run
 
 A characteristic counts as found when its identity matches the key:
