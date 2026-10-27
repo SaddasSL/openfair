@@ -29,7 +29,7 @@ Built by an aerospace quality inspector who got tired of ballooning drawings by 
 python -m venv venv
 venv\Scripts\activate            # Windows  (source venv/bin/activate on macOS/Linux)
 pip install -r requirements.txt
-set ANTHROPIC_API_KEY=...         # export on macOS/Linux; needed for extraction only
+set OPENFAIR_API_KEY=...          # export on macOS/Linux; needed for extraction only
 
 python -m src.pipeline samples/public/nist_ctc3.pdf --part-number CTC-3 --part-name "Test model 3"
 ```

@@ -65,7 +65,10 @@ Return ONLY a JSON object with these keys (null when not shown):
 
 def _client():
     import anthropic  # imported lazily so offline tools and tests don't need it
-    return anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from the environment
+    key = os.environ.get("OPENFAIR_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
+    if not key:
+        raise RuntimeError("set OPENFAIR_API_KEY to run extraction")
+    return anthropic.Anthropic(api_key=key)
 
 
 def _ask(image_path: str | Path, prompt: str, max_tokens: int = 8000) -> str:
